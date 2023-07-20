@@ -31,13 +31,7 @@ http:
   filter: "http"
 ```
 
-When scanning, a directory for each filter is created and the corresponding filtered output will be dumped to that directory.
-
-## Use cases
-### Scanning a single capture file
-`packet_hunter.py -i ~/captures/dump.pcapng -d ~/captures/output`
-
-This will use the default config `/etc/packhunt/packhunt.conf` and will create the following directories containing filtered results.
+In the example above, the following filters are defined:
 
 - dns (filtered results showing DNS requests)
 - strange-ports (filtered results showing non-standard ports)
@@ -46,20 +40,34 @@ This will use the default config `/etc/packhunt/packhunt.conf` and will create t
 - country (filtered results showing results limited to specific countries)
 - http (filtered results showing http only traffic - not https)
 
+When scanning, a directory for each filter is created and the corresponding filtered output will be dumped to that directory.
+
+## Use cases
+### Scanning a single capture file
+`packet_hunter.py -i ~/captures/dump.pcapng -d ~/captures/output`
+
+This will use the default config `/etc/packhunt/packhunt.conf` and will populate the following directories with filtered results:
+
+- dns 
+- strange-ports
+- tls-version 
+- nmap 
+- country
+- http 
+
 Each output filename will contain the current date-time.
 
 ### Scanning a multiple capture files
 `packet_hunter.py -i ~/captures/ -d ~/captures/output`
 
-Like the previous example, this will use the default config and will create the following directories containing filtered results.
-The difference between scanning a single file, and multiple files is that the results are merged into single files
+This will use the default config `/etc/packhunt/packhunt.conf` and will populate the following directories with filtered results:
 
-- dns 
-- strange-ports
-- tls-version
-- nmap
-- country
-- http
+- dns (merged results from each capture file)
+- strange-ports (merged results from each capture file)
+- tls-version (merged results from each capture file)
+- nmap (merged results from each capture file)
+- country (merged results from each capture file)
+- http (merged results from each capture file)
 
 Each output filename will contain the current date-time.
 
