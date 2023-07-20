@@ -2,6 +2,10 @@
 
 This tool scans large packet capture files (pcapng) for interesting data and dumps the output into separate files for later analysis. 
 
+Let's say you have multiple large captures from Wireshark, and you are only interested in HTTP only traffic (not HTTPS), then Packet Hunter will
+extract the necessary packets from the input files and merge them into a single file. If you are only interested in TLS traffic that is older 
+than TLS 1.2, then Packet Hunter can extract the necessary packets.
+
 **Usage**
 ```
 usage: packet_hunter.py [-h] [-i SOURCE] [-d DESTINATION] [-c CONFIG]
