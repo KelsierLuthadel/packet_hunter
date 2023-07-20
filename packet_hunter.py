@@ -44,47 +44,60 @@ class PacketHunter:
         self.create_destination()
 
     def verify_files(self):
+        # Make sure the source exists
         if not os.path.exists(self.source):
             raise FileNotFoundError("Source file does not exist")
 
+        # Make sure the config exists
         if not os.path.exists(self.config):
             raise FileNotFoundError("Config file does not exist")
 
+        # If the source is a directory, set a flag for later merging
         if os.path.isdir(self.source):
             self.merge = True
 
     def read_filters(self):
+        # Read the filters as YAML
         with open(self.config, 'r') as file:
             filters = yaml.safe_load(file)
 
+        # If a filter override has been applied, filter out anything that is not in the override list
         if self.filter_override is not None:
             filters = dict((key, filters[key]) for key in self.filter_override if key in filters)
 
+        # Save a copy of the filter names and values
         for key in filters:
             self.filters.append(PacketFilter(key, filters[key].get('filter')))
 
     def create_destination(self):
+        # Ensure a directory exists to hold each filter
         for filter_type in self.filters:
             filter_dir = Path(self.destination) / filter_type.name
             filter_dir.mkdir(parents=True, exist_ok=True)
 
     def extract_filter(self, source):
+        # Attempt to run a filter on the source provided
         for filter_type in self.filters:
+            # the output directory will be the destination path + filter name
             output = Path(self.destination) / filter_type.name
             self.extract_packets(filter_type.filter, source, output)
 
     def merge_filters(self):
+        # For each filter, attempt to merge captures
         for filter_type in self.filters:
             self.merge_packets(filter_type.name)
 
     def extract_packets(self, filter_options, source, destination):
         if self.merge is False:
+            # If we are not merging, take the original capture file and append the current date-time to the output file
             file_name = Path(source).stem + "-" + self.date_time + Path(source).suffix
         else:
+            # If we are merging, the output filename then prepend dump-
             file_name = "dump-" + Path(source).name
 
         output = Path(destination) / file_name
 
+        # Run tshark to filter the capture file
         subprocess.run(["tshark", "-r", source, "-Y", filter_options, "-w", output])
 
     def merge_packets(self, filter_name):
@@ -92,14 +105,17 @@ class PacketHunter:
 
         merge_path = Path(self.destination) / filter_name
 
+        # Find all captures that begin with dump-, these will be merged and removed
         for file in merge_path.glob('dump-*.pcapng'):
             names.append(file)
 
         destination_file = f"all-{filter_name}-{self.date_time}.pcapng"
         destination = Path(merge_path) / destination_file
 
+        # Merge all files beginning with dump- and save into a separate file
         subprocess.run(["mergecap", "-w", destination, *names])
 
+        # Remove all temporary dump files
         for file in names:
             Path(file).unlink()
 
