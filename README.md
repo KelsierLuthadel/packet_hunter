@@ -44,7 +44,7 @@ When scanning, a directory for each filter is created and the corresponding filt
 
 ## Use cases
 ### Scanning a single capture file
-`packet_hunter.py -i ~/captures/dump.pcapng -d ~/captures/output`
+`packet_hunter.py -i ~/captures/dump.pcapng -d ~/captures/output -c packhunt.conf`
 
 This will use the default config `/etc/packhunt/packhunt.conf` and will populate the following directories with filtered results:
 
@@ -58,7 +58,7 @@ This will use the default config `/etc/packhunt/packhunt.conf` and will populate
 Each output filename will contain the current date-time.
 
 ### Scanning a multiple capture files
-`packet_hunter.py -i ~/captures/ -d ~/captures/output`
+`packet_hunter.py -i ~/captures/ -d ~/captures/output -c packhunt.conf`
 
 This will use the default config `/etc/packhunt/packhunt.conf` and will populate the following directories with filtered results:
 
