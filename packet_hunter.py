@@ -14,6 +14,7 @@ DEFAULT_CONFIG = "/etc/packhunt/packhunt.conf"
 SOURCE_HELP = """Path to a packet capture file (pcapng)"""
 DESTINATION_HELP = """Path to store extracted files"""
 CONFIG_HELP = """Path to configuration"""
+FILTER_HELP = """Specific filters from the filter config to apply (i.e. -f dns nmap-scan http)"""
 
 
 @dataclass
@@ -23,7 +24,7 @@ class PacketFilter:
 
 
 class PacketHunter:
-    def __init__(self, source, destination, config):
+    def __init__(self, source, destination, config, filter_override):
         self.source = source
         self.destination = destination
 
@@ -32,6 +33,7 @@ class PacketHunter:
         else:
             self.config = DEFAULT_CONFIG
 
+        self.filter_override = filter_override
         self.filters = []
 
         self.date_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -54,6 +56,9 @@ class PacketHunter:
     def read_filters(self):
         with open(self.config, 'r') as file:
             filters = yaml.safe_load(file)
+
+        if self.filter_override is not None:
+            filters = dict((key, filters[key]) for key in self.filter_override if key in filters)
 
         for key in filters:
             self.filters.append(PacketFilter(key, filters[key].get('filter')))
@@ -105,9 +110,10 @@ def parse_args():
         description='Extract packet data for threat hunting',
         epilog='packet_hunter.py -i capture.pcapng -d ./captures')
 
-    parser.add_argument('-i', '--input', action='store', dest='source', help=SOURCE_HELP)
-    parser.add_argument('-d', '--destination', action='store', dest='destination', help=DESTINATION_HELP)
-    parser.add_argument('-c', '--config', action='store', dest='config', help=CONFIG_HELP)
+    parser.add_argument('-i', action='store', dest='source', help=SOURCE_HELP)
+    parser.add_argument('-d', action='store', dest='destination', help=DESTINATION_HELP)
+    parser.add_argument('-c', action='store', dest='config', help=CONFIG_HELP)
+    parser.add_argument('-f', action='store', dest='filter', nargs='+', required=False, help=FILTER_HELP)
 
     return parser
 
@@ -121,7 +127,7 @@ def main():
         sys.exit(1)
 
     try:
-        hunter = PacketHunter(args.source, args.destination, args.config)
+        hunter = PacketHunter(args.source, args.destination, args.config, args.filter)
     except TypeError as e:
         print("Error: Invalid config")
         sys.exit(1)

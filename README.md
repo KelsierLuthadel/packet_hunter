@@ -8,14 +8,15 @@ than TLS 1.2, then Packet Hunter can extract the necessary packets.
 
 **Usage**
 ```
-usage: packet_hunter.py [-h] [-i SOURCE] [-d DESTINATION] [-c CONFIG]
+usage: packet_hunter.py [-h] [-i SOURCE] [-d DESTINATION] [-c CONFIG] [-f FILTER]
 
 Extract packet data for threat hunting
 
 options:
   -i SOURCE      - Path to a packet capture file (pcapng)
   -d DESTINATION - Path to store extracted files
-  -c CONFIG      -  Path to configuration
+  -c CONFIG      - Path to configuration
+  -f FILTER      - Specific filters from the filter config to apply (i.e. -f dns nmap-scan http)
 ```
 ## Config
 The configuration file defines what filters to apply when reading the packet capture file(s).
@@ -24,15 +25,15 @@ The configuration file defines what filters to apply when reading the packet cap
 dns:
   filter: dns
 strange-ports:
-  filter: "!tcp.port in {22,23,25,80,443,445}"
+  filter: "!tcp.port in {22,23,25,80,443,445,993,995,8000..8005}"
 tls-version:
   filter: "tls.handshake.version < 0x0303"
-nmap:
+nmap-scan:
   filter: "tcp.flags.syn==1 and tcp.flags.ack==0 and tcp.window_size<=1024"
-country:
+bad-country:
   filter: "ip.geoip.country_iso in {CN,RU,NK}"
 http:
-  filter: "http"
+  filter: 'http'
 ```
 
 In the example above, the following filters are defined:
@@ -74,6 +75,18 @@ This will use the default config `/etc/packhunt/packhunt.conf` and will populate
 - http (merged results from each capture file)
 
 Each output filename will contain the current date-time.
+
+### Specific filters
+By default, all filters from the config file will be used to create individual filtered files. You can choose specific filters from this list by
+supplying them as an argument:
+
+#### DNS only
+`packet_hunter.py -i ~/captures/ -d ~/captures/output -c packhunt.conf -f dns`
+
+#### DNS and HTTP
+`packet_hunter.py -i ~/captures/ -d ~/captures/output -c packhunt.conf -f dns http`
+
+
 
 
 
