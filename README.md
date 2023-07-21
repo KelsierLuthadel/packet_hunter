@@ -1,4 +1,20 @@
 # Packet Hunter
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=bugs)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=KelsierLuthadel_packet_hunter&metric=coverage)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=KelsierLuthadel_packet_hunter)
+
+
 
 This tool scans large packet capture files (pcapng) for interesting data and dumps the output into separate files for later analysis. 
 
