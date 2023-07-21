@@ -24,7 +24,7 @@ class PacketFilter:
 
 
 class PacketHunter:
-    def __init__(self, source, destination, config, filter_override):
+    def __init__(self, source, destination, config, filter_override=None):
         self.source = source
         self.destination = destination
 
@@ -66,8 +66,7 @@ class PacketHunter:
             filters = dict((key, filters[key]) for key in self.filter_override if key in filters)
 
         # Save a copy of the filter names and values
-        for key in filters:
-            self.filters.append(PacketFilter(key, filters[key].get('filter')))
+        self.filters = [PacketFilter(f, filters[f].get('filter')) for f in filters]
 
     def create_destination(self):
         # Ensure a directory exists to hold each filter
