@@ -143,7 +143,7 @@ def main():
 
     try:
         hunter = PacketHunter(args.source, args.destination, args.config, args.filter)
-    except TypeError as e:
+    except TypeError:
         print("Error: Invalid config")
         sys.exit(1)
 
