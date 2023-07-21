@@ -146,6 +146,9 @@ def main():
     except TypeError:
         print("Error: Invalid config")
         sys.exit(1)
+    except FileNotFoundError as e:
+        print("Error: " + str(e))
+        sys.exit(1)
 
     if os.path.isfile(args.source):
         hunter.extract_filter(args.source)
