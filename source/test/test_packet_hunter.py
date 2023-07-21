@@ -1,10 +1,10 @@
 from pathlib import Path
-from unittest import TestCase, mock
+from unittest import TestCase
 from unittest.mock import patch, mock_open, call
 
 import yaml
 
-from packet_hunter import PacketHunter
+from source.packet_hunter import PacketHunter
 
 OPEN_PATCH = '__main__.open'
 
@@ -21,9 +21,11 @@ class TestHunter(TestCase):
     @patch('builtins.open', mock_open(read_data='1'))
     @patch.object(Path, 'mkdir')
     @patch.object(yaml, 'safe_load')
-    def setUpClass(cls, mock_yaml, mock_dir, mock_path):
+    @patch("os.path.isdir")
+    def setUpClass(cls, mock_isdir, mock_yaml, mock_dir, mock_path):
         mock_path.side_effect = [True, True]
         mock_dir.return_value = 0
+        mock_isdir.return_value = False
 
         mock_yaml.return_value = TestHunter.DEFAULT_CONFIG
 
